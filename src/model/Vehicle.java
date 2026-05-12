@@ -11,18 +11,20 @@ public class Vehicle{
     private final VehicleType type;
     private final Brand brand;
     private final Color color;
+    private final String LicensePlate;
 
     //konstruktor
-    public Vehicle(VehicleType type, Brand brand, Color color){
+    public Vehicle(VehicleType type, Brand brand, Color color, String LicensePlate){
         this.type=type;
         this.brand=brand;
         this.color=color;
+        this.LicensePlate = LicensePlate;
     }
 
     //odczytywanie danych auta przez inne pliki; Gettery
     public VehicleType getType(){return type;}
     public Brand getBrand(){return brand;}
     public Color getColor(){return color;}
-
+    public String getLicensePlate(){return LicensePlate;}
 
 }
