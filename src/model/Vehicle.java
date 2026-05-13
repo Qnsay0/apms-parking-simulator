@@ -2,9 +2,9 @@ package model;
 
 public class Vehicle{
 
-    public enum VehicleType{osoby, ciezarowy, motocykl}
+    public enum VehicleType{osobowy, ciezarowy, motocykl}
     public enum Brand{toyota, skoda, honda, bmw, audi, mercedes, ford}
-    public enum Color{czerwony, niebieski, bialy, czarny, srebrny}
+    public enum Color{czerwony, niebieski, bialy, czarny, szary}
 
     // przypisanie do konkretnego auta
     //final sprawia ze danych auta nie da sie pozniej zmienic
