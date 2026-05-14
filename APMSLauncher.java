@@ -5,25 +5,31 @@ import ui.Parking;
 
 
 
-import javax.swing.Timer; 
+import javax.swing.Timer;
+
+import config.Configuration; 
+
+
 
 public class APMSLauncher {
+    
 
     public static void main(String[] args) {
-        Parking parking = new Parking();
-        Panel myPanel = new Panel(); 
+      
+        ui.ParkingSlot parkingSystem = new ui.ParkingSlot();
+        Panel myPanel = new Panel(parkingSystem); 
         
+        Parking parking = new Parking(); 
         parking.setContentPane(myPanel);
         parking.setVisible(true);
 
-        
-        Timer moveTimer = new Timer(30, e -> {
+        Timer moveTimer = new Timer(Configuration.MOVE_ALL_VEHICLES_DELAY, e -> {
             myPanel.moveAllVehicles(); 
         });
         moveTimer.start();
 
         
-        Timer spawnTimer = new Timer(1000, e -> {
+        Timer spawnTimer = new Timer(Configuration.SPAWN_VEHICLE_DELAY, e -> {
             myPanel.spawnNewVehicle();
         });
         spawnTimer.start();

@@ -8,6 +8,8 @@ import java.util.List;
 import model.Vehicle;
 import java.util.Random;
 
+
+
 public class Panel extends JPanel {
    
     private class PositionedVehicle {
@@ -17,37 +19,45 @@ public class Panel extends JPanel {
         int state;
         long waitStartTime = 0;
         int targetX, targetY;
+        
+        
+        ParkingSlot.ParkingSpot parkingSpot;
 
-        PositionedVehicle(Vehicle vehicle, int x, int y, int targetX, int targetY, int startY) {
+        
+        PositionedVehicle(Vehicle vehicle, int x, int y, int targetX, int targetY, int startY, ParkingSlot.ParkingSpot parkingSpot) {
             this.vehicle = vehicle;
             this.x = x;
             this.y = y;
             this.startY = startY;
             this.targetX = targetX;
             this.targetY = targetY;
+            this.parkingSpot = parkingSpot; 
         }
     }
 
     private List<PositionedVehicle> activeVehicles = new ArrayList<>();
     private Generator vehicleGenerator = new Generator();
-    int[] possibleParkingSlotsX = {50,200,350,500};
+    private ParkingSlot parkingSystem; 
 
     Random random = new Random();
 
 
-    public Panel() {
+    public Panel(ParkingSlot parkingSystem) {
+        this.parkingSystem = parkingSystem;
         setBackground(Color.DARK_GRAY);
     }
 
     public void spawnNewVehicle() {
         Vehicle v = vehicleGenerator.GenerateRandom();
+        
+        ParkingSlot.ParkingSpot spot = parkingSystem.getRandomFreeSpot();
 
-        if (v != null) {
-            int startY = (random.nextInt(2)+1 == 1) ? 50 : 200;
-            
-            int destinationX = possibleParkingSlotsX[random.nextInt(possibleParkingSlotsX.length)];
-            int destinationY = startY + 100;
-            activeVehicles.add(new PositionedVehicle(v, 0, startY, destinationX, destinationY,startY));
+        if (v != null && spot != null) {
+            spot.isOccupied = true;
+            int startY = spot.row - 50;
+            int destinationX = spot.x;
+            int destinationY = startY + 50;
+            activeVehicles.add(new PositionedVehicle(v, 0, startY, destinationX, destinationY, startY, spot));
             repaint();
         }
     }
@@ -69,11 +79,12 @@ public class Panel extends JPanel {
                     } else {
                         pv.state = 2;
                         pv.waitStartTime = System.currentTimeMillis(); 
+                        pv.parkingSpot.isOccupied = true;
                     }
                     break;
 
                 case 2: 
-                    if (System.currentTimeMillis() - pv.waitStartTime >= 5000) {
+                    if (System.currentTimeMillis() - pv.waitStartTime >= 1000) {
                         pv.state = 3; 
                     }
                     break;
@@ -88,9 +99,26 @@ public class Panel extends JPanel {
 
                 case 4: 
                     pv.x += 5;
+                    
                     break;
+                    
             }
         }
+
+
+        /* Trezba usuwać pojazdy bo jak osiagna 1000 px to nadal istnieja 
+        przez co cału czas zmienia nam się status isOccupied na false co powoduje ze auta moga
+        jednoscesnie zając to samo miejsce parkingowe XD
+        */ 
+
+        activeVehicles.removeIf(pv -> {
+            if(pv.x > 1000){
+                pv.parkingSpot.isOccupied = false;
+                return true;
+            }
+            return false;
+        });
+        
         repaint();
     }
 
