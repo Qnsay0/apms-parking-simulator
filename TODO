@@ -1,6 +1,4 @@
- - Stworzenie modeli pojazdów   (ui)
  - Stworzenie modelu parkingu   (ui)
- - Mechanizm obracania pojazdu podczas parkowania
  - Dodanie JTextArea dla odczytywania i wyprintowywania 
    pojazdów wjedzających i wyjedajacych z naszego parkingu
  - Dadanie komentarzy do plików 
