@@ -17,6 +17,7 @@ public class Panel extends JPanel {
         int state;
         long waitStartTime = 0;
         int targetX, targetY;
+        boolean isVertical=false;
 
         PositionedVehicle(Vehicle vehicle, int x, int y, int targetX, int targetY, int startY) {
             this.vehicle = vehicle;
@@ -30,6 +31,7 @@ public class Panel extends JPanel {
 
     private List<PositionedVehicle> activeVehicles = new ArrayList<>();
     private Generator vehicleGenerator = new Generator();
+    private VehicleRender vehiclerender = new VehicleRender();
     int[] possibleParkingSlotsX = {50,200,350,500};
 
     Random random = new Random();
@@ -43,7 +45,7 @@ public class Panel extends JPanel {
         Vehicle v = vehicleGenerator.GenerateRandom();
 
         if (v != null) {
-            int startY = (random.nextInt(2)+1 == 1) ? 50 : 200;
+            int startY = (random.nextInt(2)+1 == 1) ? 50 : 250;
             
             int destinationX = possibleParkingSlotsX[random.nextInt(possibleParkingSlotsX.length)];
             int destinationY = startY + 100;
@@ -55,7 +57,8 @@ public class Panel extends JPanel {
    public void moveAllVehicles() {
         for (PositionedVehicle pv : activeVehicles) {
             switch (pv.state) {
-                case 0: 
+                case 0:
+                    pv.isVertical=false;
                     if (pv.x < pv.targetX) {
                         pv.x += 5;
                     } else {
@@ -63,7 +66,8 @@ public class Panel extends JPanel {
                     }
                     break;
 
-                case 1: 
+                case 1:
+                    pv.isVertical=true;
                     if (pv.y < pv.targetY) {
                         pv.y += 5;
                     } else {
@@ -86,7 +90,8 @@ public class Panel extends JPanel {
                     }
                     break;
 
-                case 4: 
+                case 4:
+                    pv.isVertical=false;
                     pv.x += 5;
                     break;
             }
@@ -99,8 +104,10 @@ public class Panel extends JPanel {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
+        Background.drawBackground(g2d);
+
         for (PositionedVehicle pv : activeVehicles) {
-            drawVehicle(g2d, pv.vehicle.getColor(), pv.vehicle.getType(), pv.x, pv.y);
+            drawVehicle(g2d, pv.vehicle, pv.vehicle.getColor(), pv.vehicle.getType(), pv.x, pv.y, pv.isVertical);
         }
     }
 
@@ -117,15 +124,13 @@ public class Panel extends JPanel {
         }
     }
 
-    public void drawVehicle(Graphics g, Vehicle.Color color, Vehicle.VehicleType type, int x, int y) {
+    public void drawVehicle(Graphics g, Vehicle vehicle, Vehicle.Color color, Vehicle.VehicleType type, int x, int y, boolean isVertical) {
         Graphics2D g2d = (Graphics2D) g;
-        g2d.setColor(convertColorEnum(color));
-        if (type == null) return;
-        
-        switch (type) {
-            case osobowy: g2d.fillRect(x, y, 40, 20); break;
-            case ciezarowy: g2d.fillRect(x, y, 50, 25); break;
-            case motocykl: g2d.fillOval(x, y, 25, 15); break;
-        }
+        if (type == null || vehicle == null) return;
+
+        Color awtColor = convertColorEnum(vehicle.getColor());
+
+        vehiclerender.draw(g2d, vehicle, x, y, awtColor, isVertical);
+
     }
 }

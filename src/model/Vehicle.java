@@ -12,6 +12,8 @@ public class Vehicle{
     private final Brand brand;
     private final Color color;
     private final String LicensePlate;
+    private final int length;
+    private final int width;
 
     //konstruktor
     public Vehicle(VehicleType type, Brand brand, Color color, String LicensePlate){
@@ -19,6 +21,28 @@ public class Vehicle{
         this.brand=brand;
         this.color=color;
         this.LicensePlate = LicensePlate;
+
+        //ustalanie wymiarow pojazdu, latwiejsze zmienianie kierunku polozenia w symulacji
+        switch (type){
+            case osobowy:
+                this.length =40;
+                this.width=20;
+                break;
+
+            case ciezarowy:
+                this.length =50;
+                this.width=25;
+                break;
+
+            case motocykl:
+                this.length =25;
+                this.width=15;
+                break;
+
+            default:
+                this.length=40;
+                this.width=20;
+        }
     }
 
     //odczytywanie danych auta przez inne pliki; Gettery
@@ -26,5 +50,6 @@ public class Vehicle{
     public Brand getBrand(){return brand;}
     public Color getColor(){return color;}
     public String getLicensePlate(){return LicensePlate;}
-
+    public int getLength() { return length; }
+    public int getWidth() { return width; }
 }
