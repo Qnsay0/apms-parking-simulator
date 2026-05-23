@@ -14,6 +14,8 @@ public class Vehicle{
     private final String LicensePlate;
     private final int length;
     private final int width;
+    private final int offsetX;
+    private final int offsetY;
 
     //konstruktor
     public Vehicle(VehicleType type, Brand brand, Color color, String LicensePlate){
@@ -43,6 +45,8 @@ public class Vehicle{
                 this.length=40;
                 this.width=20;
         }
+        this.offsetX = (50 - this.width) / 2;
+        this.offsetY = (75 - this.length) / 2;
     }
 
     //odczytywanie danych auta przez inne pliki; Gettery
@@ -52,4 +56,6 @@ public class Vehicle{
     public String getLicensePlate(){return LicensePlate;}
     public int getLength() { return length; }
     public int getWidth() { return width; }
+    public int getOffsetX() { return offsetX; }
+    public int getOffsetY() { return offsetY; }
 }

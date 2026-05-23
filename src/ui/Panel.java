@@ -19,6 +19,8 @@ public class Panel extends JPanel {
         int targetX, targetY;
         boolean isVertical=false;
 
+        ParkingSlot.ParkingSpot parkingSpot;
+
         PositionedVehicle(Vehicle vehicle, int x, int y, int targetX, int targetY, int startY) {
             this.vehicle = vehicle;
             this.x = x;
@@ -33,6 +35,7 @@ public class Panel extends JPanel {
     private Generator vehicleGenerator = new Generator();
     private VehicleRender vehiclerender = new VehicleRender();
     int[] possibleParkingSlotsX = {50,200,350,500};
+    private ParkingSlot parkingManager = new ParkingSlot();
 
     Random random = new Random();
 
@@ -41,28 +44,45 @@ public class Panel extends JPanel {
         setBackground(Color.DARK_GRAY);
     }
 
-    public void spawnNewVehicle() {
+   public void spawnNewVehicle() {
         Vehicle v = vehicleGenerator.GenerateRandom();
 
         if (v != null) {
-            int startY = (random.nextInt(2)+1 == 1) ? 50 : 250;
+            ParkingSlot.ParkingSpot spot = parkingManager.getRandomFreeSpot();
             
-            int destinationX = possibleParkingSlotsX[random.nextInt(possibleParkingSlotsX.length)];
-            int destinationY = startY + 100;
-            activeVehicles.add(new PositionedVehicle(v, 0, startY, destinationX, destinationY,startY));
+            if (spot == null) {
+                return;
+            }
+            spot.isOccupied = true;
+
+            int startY;
+          
+            if (spot.row == config.Configuration.PARKING_ROW_Y[0]) {
+                startY = 90;
+            } else {
+                startY = 290; 
+            }
+
+            int destinationX = spot.x;
+            int destinationY = spot.row - v.getLength() + 45;
+            PositionedVehicle pv = new PositionedVehicle(v, 0, startY, destinationX, destinationY, startY);
+            pv.parkingSpot = spot;
+            activeVehicles.add(pv);
             repaint();
         }
     }
+
 
    public void moveAllVehicles() {
         for (PositionedVehicle pv : activeVehicles) {
             switch (pv.state) {
                 case 0:
                     pv.isVertical=false;
-                    if (pv.x < pv.targetX) {
-                        pv.x += 5;
-                    } else {
+                    if (Math.abs(pv.x - pv.targetX) <= 5) {
+                        pv.x = pv.targetX;
                         pv.state = 1; 
+                    } else {
+                        pv.x += 5;
                     }
                     break;
 
@@ -73,12 +93,16 @@ public class Panel extends JPanel {
                     } else {
                         pv.state = 2;
                         pv.waitStartTime = System.currentTimeMillis(); 
+                       
                     }
                     break;
 
                 case 2: 
                     if (System.currentTimeMillis() - pv.waitStartTime >= 5000) {
                         pv.state = 3; 
+                        if (pv.parkingSpot != null) {
+                            pv.parkingSpot.isOccupied = true;
+                        }
                     }
                     break;
 
@@ -96,6 +120,16 @@ public class Panel extends JPanel {
                     break;
             }
         }
+       activeVehicles.removeIf(pv -> {
+            if(pv.x > 1000){
+                // Zabezpieczamy się, sprawdzając, czy parkingSpot w ogóle istnieje
+                if (pv.parkingSpot != null) {
+                    pv.parkingSpot.isOccupied = false;
+                }
+                return true; // Usuwamy auto z listy
+            }
+            return false;
+        });
         repaint();
     }
 
@@ -110,7 +144,6 @@ public class Panel extends JPanel {
             drawVehicle(g2d, pv.vehicle, pv.vehicle.getColor(), pv.vehicle.getType(), pv.x, pv.y, pv.isVertical);
         }
     }
-
 
     private Color convertColorEnum(Vehicle.Color vehicleColor) {
         if (vehicleColor == null) return Color.BLACK;
