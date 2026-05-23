@@ -1,7 +1,6 @@
 import ui.Panel;
 import ui.SimulatorWindow;
-
-
+import ui.dateWindow.DateWindow;
 
 import javax.swing.Timer; 
 
@@ -10,6 +9,8 @@ public class APMSLauncher {
     public static void main(String[] args) {
         SimulatorWindow parking = new SimulatorWindow();
         Panel myPanel = new Panel(); 
+
+    
         
         parking.setContentPane(myPanel);
         parking.setVisible(true);
@@ -21,8 +22,9 @@ public class APMSLauncher {
         moveTimer.start();
 
         
-        Timer spawnTimer = new Timer(1000, e -> {
+        Timer spawnTimer = new Timer(500, e -> {
             myPanel.spawnNewVehicle();
+           
         });
         spawnTimer.start();
         

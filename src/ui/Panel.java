@@ -6,10 +6,12 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import model.Vehicle;
+import ui.dateWindow.DateWindow;
+
 import java.util.Random;
 
 public class Panel extends JPanel {
-   
+    
     private class PositionedVehicle {
         Vehicle vehicle;
         int x, y;
@@ -37,11 +39,24 @@ public class Panel extends JPanel {
     int[] possibleParkingSlotsX = {50,200,350,500};
     private ParkingSlot parkingManager = new ParkingSlot();
 
+    public String statusText = "Syf..";
+
+
+
+    private DateWindow dateWindow = new DateWindow();
+
     Random random = new Random();
 
 
     public Panel() {
         setBackground(Color.DARK_GRAY);
+        Timer textUpdateTimer = new Timer(200, e -> {
+            statusText = "Aktualizacja! Liczba aut na mapie: " + activeVehicles.size();
+            dateWindow.updateText(statusText); 
+            repaint(); 
+        });
+        textUpdateTimer.start();
+        dateWindow.setVisible(true);
     }
 
    public void spawnNewVehicle() {
@@ -139,7 +154,7 @@ public class Panel extends JPanel {
         Graphics2D g2d = (Graphics2D) g;
 
         Background.drawBackground(g2d);
-
+        
         for (PositionedVehicle pv : activeVehicles) {
             drawVehicle(g2d, pv.vehicle, pv.vehicle.getColor(), pv.vehicle.getType(), pv.x, pv.y, pv.isVertical);
         }

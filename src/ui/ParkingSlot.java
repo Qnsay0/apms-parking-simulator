@@ -25,6 +25,7 @@ public class ParkingSlot {
         for(int x : config.Configuration.PAKRING_SLOT_X){
             parkingSpots.add(new ParkingSpot(x, config.Configuration.PARKING_ROW_Y[0]));
             parkingSpots.add(new ParkingSpot(x, config.Configuration.PARKING_ROW_Y[1]));
+
         }
     }
 

@@ -12,4 +12,6 @@ public class SimulatorWindow extends JFrame {
         setLocationRelativeTo(null);
         setBackground(Color.BLACK);
     }
+
+
 }
