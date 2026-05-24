@@ -1,5 +1,7 @@
 package model;
+import javax.xml.crypto.Data;
 
+import ui.dateWindow.*;
 public class Vehicle{
 
     public enum VehicleType{osobowy, ciezarowy, motocykl}
@@ -16,7 +18,8 @@ public class Vehicle{
     private final int width;
     private final int offsetX;
     private final int offsetY;
-
+    
+    
     //konstruktor
     public Vehicle(VehicleType type, Brand brand, Color color, String LicensePlate){
         this.type=type;
@@ -29,16 +32,20 @@ public class Vehicle{
             case osobowy:
                 this.length =40;
                 this.width=20;
+             
+
                 break;
 
             case ciezarowy:
                 this.length =50;
                 this.width=25;
+              
                 break;
 
             case motocykl:
                 this.length =25;
                 this.width=15;
+                
                 break;
 
             default:

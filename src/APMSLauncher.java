@@ -27,8 +27,6 @@ public class APMSLauncher {
            
         });
         spawnTimer.start();
-        
-      
         myPanel.spawnNewVehicle();
     }
 }

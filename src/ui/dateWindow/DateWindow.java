@@ -6,18 +6,19 @@ import java.awt.Graphics2D;
 import java.awt.Font;
 import javax.swing.*;
 
-
-
-
 public class DateWindow extends JFrame {
 
-    public String statusText = ""; 
-    private JPanel drawPanel; // Zapisujemy panel jako pole klasy, żeby móc go odświeżać
+    private int vehicleValue;
+    private int carValue;
+    private int truckValue;
+    private int motoValue;
+
+    private JPanel drawPanel;
 
     public DateWindow() {
         setTitle("App Date");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
-        setSize(400, 700);
+        setSize(400, 400);
         setLocationRelativeTo(null);
         
         drawPanel = new JPanel() {
@@ -27,22 +28,49 @@ public class DateWindow extends JFrame {
                 Graphics2D g2d = (Graphics2D) g;
 
                 g2d.setColor(Color.BLACK); 
-                g2d.setFont(new Font("Arial", Font.BOLD, 12)); 
-                g2d.drawString(statusText, 20, 30);
+                g2d.setFont(new Font("Arial", Font.BOLD, 15)); 
+
+                // Budujemy wspólną wiadomość
+                String layoutMessage = "Wszystkie pojazdy: " + vehicleValue + "\n"
+                                     + "Samochody osobowe: " + carValue + "\n"
+                                     + "Ciężarówki: " + truckValue + "\n"
+                                     + "Motocykle: " + motoValue;
+               
+                // Parametry rysowania
+                int startX = 20;
+                int y = 30;
+                int lineSpacing = 25;
+
+                // Rysujemy każdą linijkę
+                for (String line : layoutMessage.split("\n")) {
+                    g2d.drawString(line, startX, y);
+                    y += lineSpacing;
+                }
             }
         };
         
         drawPanel.setBackground(Color.WHITE); 
         add(drawPanel); 
-        
     }
 
-    public void updateText(String newText) {
-        this.statusText = newText; 
-        System.out.println(newText);
+    // Zmieniamy na zwykłe przypisywanie (=), a nie dodawanie (+=)
+    public void updateVehicleValue(int vehicleValueUpdate) {
+        this.vehicleValue = vehicleValueUpdate; 
         drawPanel.repaint();      
     }
 
+    public void updateCarValue(int carValueUpdate) {
+        this.carValue = carValueUpdate;
+        drawPanel.repaint();
+    }
 
-    
+    public void updateTruckValue(int truckValueUpdate) {
+        this.truckValue = truckValueUpdate;
+        drawPanel.repaint();
+    }
+
+    public void updateMotoValue(int motoValueUpdate) {
+        this.motoValue = motoValueUpdate;
+        drawPanel.repaint();
+    }
 }

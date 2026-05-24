@@ -16,7 +16,7 @@ public class Generator {
         //losowanie typu pojazdu
         Vehicle.VehicleType[] types = Vehicle.VehicleType.values();
         Vehicle.VehicleType type = types[random.nextInt(types.length)];
-
+        
         //losowanie marki
         Vehicle.Brand[] brands = Vehicle.Brand.values();
         Vehicle.Brand brand = brands[random.nextInt(brands.length)];

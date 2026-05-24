@@ -39,7 +39,7 @@ public class Panel extends JPanel {
     int[] possibleParkingSlotsX = {50,200,350,500};
     private ParkingSlot parkingManager = new ParkingSlot();
 
-    public String statusText = "Syf..";
+
 
 
 
@@ -48,11 +48,36 @@ public class Panel extends JPanel {
     Random random = new Random();
 
 
-    public Panel() {
+
+   public Panel() {
         setBackground(Color.DARK_GRAY);
         Timer textUpdateTimer = new Timer(200, e -> {
-            statusText = "Aktualizacja! Liczba aut na mapie: " + activeVehicles.size();
-            dateWindow.updateText(statusText); 
+            
+            // 1. Zmienne tymczasowe dla obecnego stanu (resetują się co klatkę)
+            int currentCars = 0;
+            int currentTrucks = 0;
+            int currentMotos = 0;
+
+            // 2. Przeliczamy listę pojazdów, które FAKTYCZNIE są na ekranie
+            for (PositionedVehicle pv : activeVehicles) {
+                if (pv.vehicle.getType() == Vehicle.VehicleType.osobowy) {
+                    currentCars++;
+                } else if (pv.vehicle.getType() == Vehicle.VehicleType.ciezarowy) {
+                    currentTrucks++;
+                } else if (pv.vehicle.getType() == Vehicle.VehicleType.motocykl) {
+                    currentMotos++;
+                }
+            }
+
+            
+            int currentTotalVehicles = activeVehicles.size(); 
+            
+            // 3. Aktualizujemy okno prawidłowymi, obecnymi wartościami
+            dateWindow.updateCarValue(currentCars);
+            dateWindow.updateTruckValue(currentTrucks);
+            dateWindow.updateMotoValue(currentMotos);
+            dateWindow.updateVehicleValue(currentTotalVehicles); 
+            
             repaint(); 
         });
         textUpdateTimer.start();
@@ -61,13 +86,17 @@ public class Panel extends JPanel {
 
    public void spawnNewVehicle() {
         Vehicle v = vehicleGenerator.GenerateRandom();
-
+        
+        
         if (v != null) {
+            
             ParkingSlot.ParkingSpot spot = parkingManager.getRandomFreeSpot();
             
             if (spot == null) {
                 return;
             }
+
+
             spot.isOccupied = true;
 
             int startY;
@@ -136,12 +165,12 @@ public class Panel extends JPanel {
             }
         }
        activeVehicles.removeIf(pv -> {
-            if(pv.x > 1000){
-                // Zabezpieczamy się, sprawdzając, czy parkingSpot w ogóle istnieje
+            if(pv.x > 500){
+             
                 if (pv.parkingSpot != null) {
                     pv.parkingSpot.isOccupied = false;
                 }
-                return true; // Usuwamy auto z listy
+                return true; 
             }
             return false;
         });
