@@ -36,12 +36,10 @@ public class DateWindow extends JFrame {
                                      + "Ciężarówki: " + truckValue + "\n"
                                      + "Motocykle: " + motoValue;
                
-                // Parametry rysowania
                 int startX = 20;
                 int y = 30;
                 int lineSpacing = 25;
-
-                // Rysujemy każdą linijkę
+                
                 for (String line : layoutMessage.split("\n")) {
                     g2d.drawString(line, startX, y);
                     y += lineSpacing;
