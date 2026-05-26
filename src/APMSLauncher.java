@@ -16,13 +16,13 @@ public class APMSLauncher {
         parking.setVisible(true);
 
         
-        Timer moveTimer = new Timer(30, e -> {
+        Timer moveTimer = new Timer(config.Configuration.MOVE_ALL_VEHICLES_DELAY, e -> {
             myPanel.moveAllVehicles(); 
         });
         moveTimer.start();
 
         
-        Timer spawnTimer = new Timer(500, e -> {
+        Timer spawnTimer = new Timer(config.Configuration.SPAWN_VEHICLE_DELAY, e -> {
             myPanel.spawnNewVehicle();
            
         });

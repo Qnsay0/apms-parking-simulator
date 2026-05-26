@@ -16,11 +16,7 @@ public class DateWindow extends JFrame {
     private JPanel drawPanel;
 
     public DateWindow() {
-        setTitle("App Date");
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
-        setSize(400, 400);
-        setLocationRelativeTo(null);
-        
+        createDataWindow();
         drawPanel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -30,7 +26,7 @@ public class DateWindow extends JFrame {
                 g2d.setColor(Color.BLACK); 
                 g2d.setFont(new Font("Arial", Font.BOLD, 15)); 
 
-                // Budujemy wspólną wiadomość
+            
                 String layoutMessage = "Wszystkie pojazdy: " + vehicleValue + "\n"
                                      + "Samochody osobowe: " + carValue + "\n"
                                      + "Ciężarówki: " + truckValue + "\n"
@@ -51,7 +47,15 @@ public class DateWindow extends JFrame {
         add(drawPanel); 
     }
 
-    // Zmieniamy na zwykłe przypisywanie (=), a nie dodawanie (+=)
+    private void createDataWindow(){
+        setTitle(config.Configuration.DATA_SCREEN_NAME);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
+        setSize(config.Configuration.DATA_SCREEN_SIZE[0], config.Configuration.DATA_SCREEN_SIZE[1]);
+        setLocationRelativeTo(null);
+    }
+
+
+
     public void updateVehicleValue(int vehicleValueUpdate) {
         this.vehicleValue = vehicleValueUpdate; 
         drawPanel.repaint();      

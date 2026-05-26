@@ -53,12 +53,12 @@ public class Panel extends JPanel {
         setBackground(Color.DARK_GRAY);
         Timer textUpdateTimer = new Timer(200, e -> {
             
-            // 1. Zmienne tymczasowe dla obecnego stanu (resetują się co klatkę)
+            
             int currentCars = 0;
             int currentTrucks = 0;
             int currentMotos = 0;
 
-            // 2. Przeliczamy listę pojazdów, które FAKTYCZNIE są na ekranie
+          
             for (PositionedVehicle pv : activeVehicles) {
                 if (pv.vehicle.getType() == Vehicle.VehicleType.osobowy) {
                     currentCars++;
