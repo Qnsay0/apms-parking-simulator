@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Vehicle;
 import ui.dateWindow.DateWindow;
-
+import model.ParkingSpace;
 import java.util.Random;
 
 public class Panel extends JPanel {
@@ -19,9 +19,9 @@ public class Panel extends JPanel {
         int state;
         long waitStartTime = 0;
         int targetX, targetY;
-        boolean isVertical=false;
+        boolean isVertical = false;
 
-        ParkingSlot.ParkingSpot parkingSpot;
+        ParkingSpace parkingSpace;
 
         PositionedVehicle(Vehicle vehicle, int x, int y, int targetX, int targetY, int startY) {
             this.vehicle = vehicle;
@@ -36,29 +36,20 @@ public class Panel extends JPanel {
     private List<PositionedVehicle> activeVehicles = new ArrayList<>();
     private Generator vehicleGenerator = new Generator();
     private VehicleRender vehiclerender = new VehicleRender();
-    int[] possibleParkingSlotsX = {50,200,350,500};
-    private ParkingSlot parkingManager = new ParkingSlot();
-
-
-
-
+   
+    private ParkingSpace parkingManager = new ParkingSpace(0, 0, Vehicle.VehicleType.osobowy, false);
 
     private DateWindow dateWindow = new DateWindow();
-
     Random random = new Random();
 
-
-
-   public Panel() {
+    public Panel() {
         setBackground(Color.DARK_GRAY);
         Timer textUpdateTimer = new Timer(200, e -> {
-            
             
             int currentCars = 0;
             int currentTrucks = 0;
             int currentMotos = 0;
 
-          
             for (PositionedVehicle pv : activeVehicles) {
                 if (pv.vehicle.getType() == Vehicle.VehicleType.osobowy) {
                     currentCars++;
@@ -69,10 +60,8 @@ public class Panel extends JPanel {
                 }
             }
 
-            
             int currentTotalVehicles = activeVehicles.size(); 
             
-            // 3. Aktualizujemy okno prawidłowymi, obecnymi wartościami
             dateWindow.updateCarValue(currentCars);
             dateWindow.updateTruckValue(currentTrucks);
             dateWindow.updateMotoValue(currentMotos);
@@ -84,44 +73,48 @@ public class Panel extends JPanel {
         dateWindow.setVisible(true);
     }
 
-   public void spawnNewVehicle() {
+    public void spawnNewVehicle() {
         Vehicle v = vehicleGenerator.GenerateRandom();
-        
         
         if (v != null) {
             
-            ParkingSlot.ParkingSpot spot = parkingManager.getRandomFreeSpot();
+            ParkingSpace spot = parkingManager.getRandomFreeSpot(v.getType());
             
             if (spot == null) {
                 return;
             }
 
-
-            spot.isOccupied = true;
+            
+            spot.occupied = true;
 
             int startY;
-          
-            if (spot.row == config.Configuration.PARKING_ROW_Y[0]) {
-                startY = 90;
-            } else {
-                startY = 290; 
+            
+
+
+            if(spot.y < 100){
+                startY = 100; 
+            } else if(spot.y < 270){
+                startY = 150; 
+            }else if(spot.y < 350){
+                startY = 370; 
+            }else{
+                startY = 430; 
             }
 
             int destinationX = spot.x;
-            int destinationY = spot.row - v.getLength() + 45;
+            int destinationY = spot.y;
             PositionedVehicle pv = new PositionedVehicle(v, 0, startY, destinationX, destinationY, startY);
-            pv.parkingSpot = spot;
+            pv.parkingSpace = spot;
             activeVehicles.add(pv);
             repaint();
         }
     }
 
-
-   public void moveAllVehicles() {
+    public void moveAllVehicles() {
         for (PositionedVehicle pv : activeVehicles) {
             switch (pv.state) {
                 case 0:
-                    pv.isVertical=false;
+                    pv.isVertical = false;
                     if (Math.abs(pv.x - pv.targetX) <= 5) {
                         pv.x = pv.targetX;
                         pv.state = 1; 
@@ -131,44 +124,46 @@ public class Panel extends JPanel {
                     break;
 
                 case 1:
-                    pv.isVertical=true;
+                    pv.isVertical = true;
                     if (pv.y < pv.targetY) {
                         pv.y += 5;
-                    } else {
+                    } else if(pv.y > pv.targetY) {
+                        pv.y -= 5;
+                    }else {
                         pv.state = 2;
                         pv.waitStartTime = System.currentTimeMillis(); 
-                       
                     }
                     break;
 
                 case 2: 
-                    if (System.currentTimeMillis() - pv.waitStartTime >= 5000) {
+                    if (System.currentTimeMillis() - pv.waitStartTime >= 8000) {
                         pv.state = 3; 
-                        if (pv.parkingSpot != null) {
-                            pv.parkingSpot.isOccupied = true;
-                        }
+                       
                     }
                     break;
 
                 case 3: 
                     if (pv.y > pv.startY) {
                         pv.y -= 5;
-                    } else {
-                        pv.state = 4; 
+                    } else if(pv.y < pv.startY) {
+                         pv.y += 5;
+                    }else{
+                        pv.state = 4;
                     }
                     break;
 
                 case 4:
-                    pv.isVertical=false;
+                    pv.isVertical = false;
                     pv.x += 5;
                     break;
             }
         }
-       activeVehicles.removeIf(pv -> {
-            if(pv.x > 500){
+        activeVehicles.removeIf(pv -> {
+           
+            if(pv.x > 1200){
              
-                if (pv.parkingSpot != null) {
-                    pv.parkingSpot.isOccupied = false;
+                if (pv.parkingSpace != null) {
+                    pv.parkingSpace.occupied = false; 
                 }
                 return true; 
             }
@@ -208,6 +203,5 @@ public class Panel extends JPanel {
         Color awtColor = convertColorEnum(vehicle.getColor());
 
         vehiclerender.draw(g2d, vehicle, x, y, awtColor, isVertical);
-
     }
 }

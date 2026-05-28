@@ -1,7 +1,7 @@
 package generator;
 
 import model.Vehicle;
-import generator.LicensePlateGenerator;
+
 import java.util.Random;
 
 
@@ -26,10 +26,10 @@ public class Generator {
         Vehicle.Color color = colors[random.nextInt(colors.length)];
 
         // 1. Generowanie losowego numeru rejestracyjnego za pomocą LicensePlateGenerator
-        String licensePlate = LicensePlateGenerator.generatorPlateNumber(); 
+        
 
         // 2. Przekazujemy ten String do konstruktora Vehicle
-        return new Vehicle(type, brand, color, licensePlate);
+        return new Vehicle(type, brand, color);
        
     }
 }

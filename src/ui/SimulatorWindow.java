@@ -8,7 +8,7 @@ public class SimulatorWindow extends JFrame {
     public SimulatorWindow() {
         setTitle("APMS - Parking Lot Simulator");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(500, 500);
+        setSize(1000, 600);
         setLocationRelativeTo(null);
         setBackground(Color.BLACK);
     }
