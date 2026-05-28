@@ -23,9 +23,9 @@ public class ParkingTab {
         //przypisanie wartosci dla motocykli
         for(int poziom=16; poziom<j; poziom++){
             spaces[0][poziom] = new ParkingSpace((poziom+1)*25, 50, Vehicle.VehicleType.motocykl, false);
-            spaces[0][poziom] = new ParkingSpace((poziom+1)*25, 220, Vehicle.VehicleType.motocykl, false);
-            spaces[0][poziom] = new ParkingSpace((poziom+1)*25, 320, Vehicle.VehicleType.motocykl, false);
-            spaces[0][poziom] = new ParkingSpace((poziom+1)*25, 490, Vehicle.VehicleType.motocykl, false);
+            spaces[1][poziom] = new ParkingSpace((poziom+1)*25, 220, Vehicle.VehicleType.motocykl, false);
+            spaces[2][poziom] = new ParkingSpace((poziom+1)*25, 320, Vehicle.VehicleType.motocykl, false);
+            spaces[3][poziom] = new ParkingSpace((poziom+1)*25, 490, Vehicle.VehicleType.motocykl, false);
         }
 
 
