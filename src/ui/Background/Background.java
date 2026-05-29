@@ -1,13 +1,7 @@
-package ui;
+package ui.Background;
 
-import javax.swing.*;
-import generator.Generator;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import model.Vehicle;
-import java.util.Random;
-import config.Configuration;
+
 public class Background{
 
     public static void drawBackground(Graphics2D g2d) {

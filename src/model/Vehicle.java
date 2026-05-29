@@ -1,7 +1,7 @@
 package model;
 import javax.xml.crypto.Data;
 
-import ui.dateWindow.*;
+import ui.Screens.*;
 public class Vehicle{
 
     public enum VehicleType{osobowy, ciezarowy, motocykl}

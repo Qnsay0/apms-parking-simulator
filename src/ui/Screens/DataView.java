@@ -1,4 +1,4 @@
-package ui.dateWindow;
+package ui.Screens;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Font;
 import javax.swing.*;
 
-public class DateWindow extends JFrame {
+public class DataView extends JFrame {
 
     private int vehicleValue;
     private int carValue;
@@ -15,7 +15,7 @@ public class DateWindow extends JFrame {
 
     private JPanel drawPanel;
 
-    public DateWindow() {
+    public DataView() {
         createDataWindow();
         drawPanel = new JPanel() {
             @Override

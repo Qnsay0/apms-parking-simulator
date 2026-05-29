@@ -6,7 +6,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import model.Vehicle;
-import ui.dateWindow.DateWindow;
+import ui.Background.Background;
+import ui.Screens.DataView;
 import model.ParkingSpace;
 import java.util.Random;
 
@@ -39,12 +40,12 @@ public class Panel extends JPanel {
    
     private ParkingSpace parkingManager = new ParkingSpace(0, 0, Vehicle.VehicleType.osobowy, false);
 
-    private DateWindow dateWindow = new DateWindow();
+    private DataView dateWindow = new DataView();
     Random random = new Random();
 
     public Panel() {
         setBackground(Color.DARK_GRAY);
-        Timer textUpdateTimer = new Timer(200, e -> {
+        Timer textUpdateTimer = new Timer(config.Configuration.STATS_UPDATE_DELAY, e -> {
             
             int currentCars = 0;
             int currentTrucks = 0;
@@ -84,22 +85,11 @@ public class Panel extends JPanel {
                 return;
             }
 
-            
             spot.occupied = true;
 
-            int startY;
+            int startY = calculateStartY(spot.y);;
+        
             
-
-
-            if(spot.y < 100){
-                startY = 100; 
-            } else if(spot.y < 270){
-                startY = 150; 
-            }else if(spot.y < 350){
-                startY = 370; 
-            }else{
-                startY = 430; 
-            }
 
             int destinationX = spot.x;
             int destinationY = spot.y;
@@ -109,7 +99,12 @@ public class Panel extends JPanel {
             repaint();
         }
     }
-
+    private int calculateStartY(int spotY) {
+        if (spotY < 100) return 100;
+        if (spotY < 270) return 150;
+        if (spotY < 380) return 370;
+        return 430; 
+    }
     public void moveAllVehicles() {
         for (PositionedVehicle pv : activeVehicles) {
             switch (pv.state) {
@@ -136,7 +131,7 @@ public class Panel extends JPanel {
                     break;
 
                 case 2: 
-                    if (System.currentTimeMillis() - pv.waitStartTime >= 8000) {
+                    if (System.currentTimeMillis() - pv.waitStartTime >= config.Configuration.SPOT_OCCUPATING_TIME) {
                         pv.state = 3; 
                        
                     }

@@ -11,7 +11,7 @@ public class VehicleRender {
 
         //obracanie
         if (isVertical) {
-            g2d.rotate(Math.toRadians(90), x + (vehicle.getLength() / 2.0), y + (vehicle.getWidth() / 2.0));
+            g2d.rotate(Math.toRadians(config.Configuration.VEHICLE_ROTATION), x + (vehicle.getLength() / 2.0), y + (vehicle.getWidth() / 2.0));
         }
 
         switch (vehicle.getType()) {

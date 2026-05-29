@@ -1,13 +1,13 @@
 import ui.Panel;
-import ui.SimulatorWindow;
-import ui.dateWindow.DateWindow;
+import ui.Screens.DataView;
+import ui.Screens.SimulatorView;
 
 import javax.swing.Timer; 
 
 public class APMSLauncher {
 
     public static void main(String[] args) {
-        SimulatorWindow parking = new SimulatorWindow();
+        SimulatorView parking = new SimulatorView();
         Panel myPanel = new Panel(); 
 
     
