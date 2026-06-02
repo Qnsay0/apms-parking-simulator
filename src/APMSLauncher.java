@@ -1,5 +1,5 @@
 import ui.Panel;
-import ui.Screens.DataView;
+import ui.Screens.DateView;
 import ui.Screens.SimulatorView;
 
 import javax.swing.Timer; 

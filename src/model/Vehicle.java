@@ -25,7 +25,7 @@ public class Vehicle{
         this.brand=brand;
         this.color=color;
      
-
+        // zamiana tego na wzorzec programowanai!!!
         //ustalanie wymiarow pojazdu, latwiejsze zmienianie kierunku polozenia w symulacji
         switch (type){
             case osobowy:
@@ -58,7 +58,6 @@ public class Vehicle{
     public VehicleType getType(){return type;}
     public Brand getBrand(){return brand;}
     public Color getColor(){return color;}
-    
     public int getLength() { return length; }
     public int getWidth() { return width; }
  

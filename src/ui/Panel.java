@@ -7,12 +7,13 @@ import java.util.ArrayList;
 import java.util.List;
 import model.Vehicle;
 import ui.Background.Background;
-import ui.Screens.DataView;
+import ui.Screens.DateView;
 import model.ParkingSpace;
 import java.util.Random;
 
 public class Panel extends JPanel {
     
+    // Konstruktor dot. pojazdów - wyznaczania ich miejsca docelowego, startu oraz state (stanu)
     private class PositionedVehicle {
         Vehicle vehicle;
         int x, y;
@@ -34,13 +35,12 @@ public class Panel extends JPanel {
         }
     }
 
+    // Tworzenie nowych obiekótw wykorzystywanych do poprawnego działania symulacji
     private List<PositionedVehicle> activeVehicles = new ArrayList<>();
     private Generator vehicleGenerator = new Generator();
     private VehicleRender vehiclerender = new VehicleRender();
-   
     private ParkingSpace parkingManager = new ParkingSpace(0, 0, Vehicle.VehicleType.osobowy, false);
-
-    private DataView dateWindow = new DataView();
+    private DateView dateWindow = new DateView();
     Random random = new Random();
 
     public Panel() {
@@ -105,6 +105,9 @@ public class Panel extends JPanel {
         if (spotY < 380) return 370;
         return 430; 
     }
+ 
+    // Tutaj zmienić kod na wzorzec !!!
+
     public void moveAllVehicles() {
         for (PositionedVehicle pv : activeVehicles) {
             switch (pv.state) {
@@ -179,6 +182,7 @@ public class Panel extends JPanel {
         }
     }
 
+    // Zamiana nazwy koloru na właściwy kolor
     private Color convertColorEnum(Vehicle.Color vehicleColor) {
         if (vehicleColor == null) return Color.BLACK;
         switch (vehicleColor) {
@@ -191,6 +195,8 @@ public class Panel extends JPanel {
         }
     }
 
+
+    // Funckja zajmująca się rysowaniem pojazdów
     public void drawVehicle(Graphics g, Vehicle vehicle, Vehicle.Color color, Vehicle.VehicleType type, int x, int y, boolean isVertical) {
         Graphics2D g2d = (Graphics2D) g;
         if (type == null || vehicle == null) return;

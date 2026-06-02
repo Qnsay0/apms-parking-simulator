@@ -9,7 +9,7 @@ public class VehicleRender {
         //zapisywanie poprzedniego stanu, zeby nie obrocic calego parkingu ale sam pojazd
         java.awt.geom.AffineTransform oldTransform = g2d.getTransform();
 
-        //obracanie
+        //obracanie pojazdów o [config.Configuration.VEHICLE_ROTATION] stopni.
         if (isVertical) {
             g2d.rotate(Math.toRadians(config.Configuration.VEHICLE_ROTATION), x + (vehicle.getLength() / 2.0), y + (vehicle.getWidth() / 2.0));
         }

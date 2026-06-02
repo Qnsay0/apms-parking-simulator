@@ -25,9 +25,6 @@ public class Generator {
         Vehicle.Color[] colors = Vehicle.Color.values();
         Vehicle.Color color = colors[random.nextInt(colors.length)];
 
-        // 1. Generowanie losowego numeru rejestracyjnego za pomocą LicensePlateGenerator
-        
-
         // 2. Przekazujemy ten String do konstruktora Vehicle
         return new Vehicle(type, brand, color);
        

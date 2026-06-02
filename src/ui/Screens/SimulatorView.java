@@ -3,6 +3,8 @@ package ui.Screens;
 import java.awt.Color;
 import javax.swing.*;
 
+
+// Głowne okno symulacyjne - zawierające wizualizaje symulacji 
 public class SimulatorView extends JFrame {
     public SimulatorView() {
         setTitle(config.Configuration.SIMULATOR_SCREEN_NAME);

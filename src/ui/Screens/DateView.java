@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Font;
 import javax.swing.*;
 
-public class DataView extends JFrame {
+public class DateView extends JFrame {
 
     private int vehicleValue;
     private int carValue;
@@ -15,7 +15,11 @@ public class DataView extends JFrame {
 
     private JPanel drawPanel;
 
-    public DataView() {
+
+    // Dodatkowe okno przechowujące i wyświetlające dane o pojazdach (liczbie pojazdów)
+    public DateView() {
+
+        // Wywołanie funkcji tworzącej okno DateView
         createDataWindow();
         drawPanel = new JPanel() {
             @Override
@@ -32,10 +36,13 @@ public class DataView extends JFrame {
                                      + "Ciężarówki: " + truckValue + "\n"
                                      + "Motocykle: " + motoValue;
                
+
+                // Parametry o lokalizacji Tekstu na ekranie
                 int startX = 20;
                 int y = 30;
                 int lineSpacing = 25;
                 
+
                 for (String line : layoutMessage.split("\n")) {
                     g2d.drawString(line, startX, y);
                     y += lineSpacing;
@@ -47,6 +54,7 @@ public class DataView extends JFrame {
         add(drawPanel); 
     }
 
+    // Funkcja tworząca okno DateView
     private void createDataWindow(){
         setTitle(config.Configuration.DATA_SCREEN_NAME);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
@@ -55,7 +63,7 @@ public class DataView extends JFrame {
     }
 
 
-
+    // Funkcje które aktualizują dane dotyczące liczby poszeczególnych rodzajów pojazdu na ekranie 
     public void updateVehicleValue(int vehicleValueUpdate) {
         this.vehicleValue = vehicleValueUpdate; 
         drawPanel.repaint();      
