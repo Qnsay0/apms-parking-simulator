@@ -205,4 +205,8 @@ public class Panel extends JPanel {
 
         vehiclerender.draw(g2d, vehicle, x, y, awtColor, isVertical);
     }
+
+    public int occupiedCount(){
+        return activeVehicles.size();
+    }
 }
