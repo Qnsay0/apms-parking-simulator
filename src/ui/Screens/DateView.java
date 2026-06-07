@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Font;
 import javax.swing.*;
 
+
 public class DateView extends JFrame {
 
     private int vehicleValue;

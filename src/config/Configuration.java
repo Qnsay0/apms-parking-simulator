@@ -3,11 +3,11 @@ package config;
 public class Configuration {
 
     // Parametry do modyfikacji symulacji
-    public static final int MOVE_ALL_VEHICLES_DELAY = 10;
-    public static final int SPAWN_VEHICLE_DELAY = 100;
+    public static int MOVE_ALL_VEHICLES_DELAY = 10;
+    public static int SPAWN_VEHICLE_DELAY = 100;
     public static final int VEHICLE_ROTATION = 90;
     public static final int STATS_UPDATE_DELAY = 200;
-    public static final int SPOT_OCCUPATING_TIME = 10000;
+    public static int SPOT_OCCUPATING_TIME = 10000;
     
     // Parametry okna DataView
     public static final int[] DATA_SCREEN_SIZE = {400, 400};
