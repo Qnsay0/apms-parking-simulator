@@ -12,18 +12,85 @@ import model.ParkingSpace;
 import java.util.Random;
 
 public class Panel extends JPanel {
+
+    //WZORZEC STANU (STATE PATTERN)
+    private interface VehicleState {
+        void update(PositionedVehicle pv);
+    }
+
+    private class DrivingToAisleState implements VehicleState {
+        @Override
+        public void update(PositionedVehicle pv) {
+            pv.isVertical = false;
+            if (Math.abs(pv.x - pv.targetX) <= 10) {
+                pv.x = pv.targetX;
+                pv.setState(new ParkingState());
+            } else {
+                pv.x += 5;
+            }
+        }
+    }
+
+    private class ParkingState implements VehicleState {
+        @Override
+        public void update(PositionedVehicle pv) {
+            pv.isVertical = true;
+            if (pv.y < pv.targetY) {
+                pv.y += 5;
+            } else if (pv.y > pv.targetY) {
+                pv.y -= 5;
+            } else {
+                pv.waitStartTime = System.currentTimeMillis();
+                pv.setState(new ParkedState());
+            }
+        }
+    }
+
+    private class ParkedState implements VehicleState {
+        @Override
+        public void update(PositionedVehicle pv) {
+            if (System.currentTimeMillis() - pv.waitStartTime >= config.Configuration.SPOT_OCCUPATING_TIME) {
+                pv.setState(new LeavingSpotState());
+            }
+        }
+    }
+
+    private class LeavingSpotState implements VehicleState {
+        @Override
+        public void update(PositionedVehicle pv) {
+            if (pv.y > pv.startY) {
+                pv.y -= 5;
+            } else if (pv.y < pv.startY) {
+                pv.y += 5;
+            } else {
+                pv.setState(new ExitingState());
+            }
+        }
+    }
+
+    private class ExitingState implements VehicleState {
+        @Override
+        public void update(PositionedVehicle pv) {
+            pv.isVertical = false;
+            pv.x += 5;
+        }
+    }
     
-    // Konstruktor dot. pojazdów - wyznaczania ich miejsca docelowego, startu oraz state (stanu)
+
+    
+    // Konstruktor dot. pojazdów - wyznaczania ich miejsca docelowego, startu oraz stanu
     private class PositionedVehicle {
         Vehicle vehicle;
         int x, y;
         int startY;
-        int state;
         long waitStartTime = 0;
         int targetX, targetY;
         boolean isVertical = false;
 
         ParkingSpace parkingSpace;
+        
+      
+        private VehicleState currentState;
 
         PositionedVehicle(Vehicle vehicle, int x, int y, int targetX, int targetY, int startY) {
             this.vehicle = vehicle;
@@ -32,6 +99,20 @@ public class Panel extends JPanel {
             this.startY = startY;
             this.targetX = targetX;
             this.targetY = targetY;
+            
+           
+            this.currentState = new DrivingToAisleState();
+        }
+
+        
+        public void setState(VehicleState newState) {
+            this.currentState = newState;
+        }
+
+        public void updateState() {
+            if (currentState != null) {
+                currentState.update(this);
+            }
         }
     }
 
@@ -87,10 +168,8 @@ public class Panel extends JPanel {
 
             spot.occupied = true;
 
-            int startY = calculateStartY(spot.y);;
+            int startY = calculateStartY(spot.y);
         
-            
-
             int destinationX = spot.x;
             int destinationY = spot.y;
             PositionedVehicle pv = new PositionedVehicle(v, 0, startY, destinationX, destinationY, startY);
@@ -99,6 +178,7 @@ public class Panel extends JPanel {
             repaint();
         }
     }
+    
     private int calculateStartY(int spotY) {
         if (spotY < 100) return 100;
         if (spotY < 270) return 150;
@@ -106,60 +186,14 @@ public class Panel extends JPanel {
         return 430; 
     }
  
-    // Tutaj zmienić kod na wzorzec !!!
-
+    
     public void moveAllVehicles() {
         for (PositionedVehicle pv : activeVehicles) {
-            switch (pv.state) {
-                case 0:
-                    pv.isVertical = false;
-                    if (Math.abs(pv.x - pv.targetX) <= 5) {
-                        pv.x = pv.targetX;
-                        pv.state = 1; 
-                    } else {
-                        pv.x += 5;
-                    }
-                    break;
-
-                case 1:
-                    pv.isVertical = true;
-                    if (pv.y < pv.targetY) {
-                        pv.y += 5;
-                    } else if(pv.y > pv.targetY) {
-                        pv.y -= 5;
-                    }else {
-                        pv.state = 2;
-                        pv.waitStartTime = System.currentTimeMillis(); 
-                    }
-                    break;
-
-                case 2: 
-                    if (System.currentTimeMillis() - pv.waitStartTime >= config.Configuration.SPOT_OCCUPATING_TIME) {
-                        pv.state = 3; 
-                       
-                    }
-                    break;
-
-                case 3: 
-                    if (pv.y > pv.startY) {
-                        pv.y -= 5;
-                    } else if(pv.y < pv.startY) {
-                         pv.y += 5;
-                    }else{
-                        pv.state = 4;
-                    }
-                    break;
-
-                case 4:
-                    pv.isVertical = false;
-                    pv.x += 5;
-                    break;
-            }
+            pv.updateState();
         }
+        
         activeVehicles.removeIf(pv -> {
-           
             if(pv.x > 1200){
-             
                 if (pv.parkingSpace != null) {
                     pv.parkingSpace.occupied = false; 
                 }
