@@ -38,4 +38,4 @@ Dla systemu **macOS / Linux**:
    open target/reports/apidocs/index.html
 3. Dla systemu **Windows:**
    ```bash
-   start target\site\apidocs\index.html
+   start target/reports/apidocs/index.html
