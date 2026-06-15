@@ -39,8 +39,3 @@ Dla systemu **macOS / Linux**:
 Dla systemu **Windows:**
    ```bash
    start target\site\apidocs\index.html
-  
-
-   
-   
-
