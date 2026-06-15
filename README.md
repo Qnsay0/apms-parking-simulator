@@ -35,7 +35,7 @@
 2. **Otwórz w przeglądarce**
 Dla systemu **macOS / Linux**:
    ```bash
-   open target/site/apidocs/index.html
+   open target/reports/apidocs/index.html
 3. Dla systemu **Windows:**
    ```bash
    start target\site\apidocs\index.html
