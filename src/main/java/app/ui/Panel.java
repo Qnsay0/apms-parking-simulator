@@ -1,0 +1,248 @@
+package app.ui;
+
+import javax.swing.*;
+
+import app.generator.Generator;
+import app.model.ParkingSpace;
+import app.model.Vehicle;
+import app.ui.Background.Background;
+import app.ui.Screens.DateView;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class Panel extends JPanel {
+
+    
+    private interface VehicleState {
+        void update(PositionedVehicle pv);
+    }
+
+    private class DrivingToAisleState implements VehicleState {
+        @Override
+        public void update(PositionedVehicle pv) {
+            pv.isVertical = false;
+            if (Math.abs(pv.x - pv.targetX) <= 10) {
+                pv.x = pv.targetX;
+                pv.setState(new ParkingState());
+            } else {
+                pv.x += 5;
+            }
+        }
+    }
+
+    private class ParkingState implements VehicleState {
+        @Override
+        public void update(PositionedVehicle pv) {
+            pv.isVertical = true;
+            if (pv.y < pv.targetY) {
+                pv.y += 5;
+            } else if (pv.y > pv.targetY) {
+                pv.y -= 5;
+            } else {
+                pv.waitStartTime = System.currentTimeMillis();
+                pv.setState(new ParkedState());
+            }
+        }
+    }
+
+    private class ParkedState implements VehicleState {
+        @Override
+        public void update(PositionedVehicle pv) {
+            if (System.currentTimeMillis() - pv.waitStartTime >= app.config.Configuration.SPOT_OCCUPATING_TIME) {
+                pv.setState(new LeavingSpotState());
+            }
+        }
+    }
+
+    private class LeavingSpotState implements VehicleState {
+        @Override
+        public void update(PositionedVehicle pv) {
+            if (pv.y > pv.startY) {
+                pv.y -= 5;
+            } else if (pv.y < pv.startY) {
+                pv.y += 5;
+            } else {
+                pv.setState(new ExitingState());
+            }
+        }
+    }
+
+    private class ExitingState implements VehicleState {
+        @Override
+        public void update(PositionedVehicle pv) {
+            pv.isVertical = false;
+            pv.x += 5;
+        }
+    }
+    
+
+    
+    // Konstruktor dot. pojazdów - wyznaczania ich miejsca docelowego, startu oraz stanu
+    private class PositionedVehicle {
+        Vehicle vehicle;
+        int x, y;
+        int startY;
+        long waitStartTime = 0;
+        int targetX, targetY;
+        boolean isVertical = false;
+
+        ParkingSpace parkingSpace;
+        
+      
+        private VehicleState currentState;
+
+        PositionedVehicle(Vehicle vehicle, int x, int y, int targetX, int targetY, int startY) {
+            this.vehicle = vehicle;
+            this.x = x;
+            this.y = y;
+            this.startY = startY;
+            this.targetX = targetX;
+            this.targetY = targetY;
+            
+           
+            this.currentState = new DrivingToAisleState();
+        }
+
+        
+        public void setState(VehicleState newState) {
+            this.currentState = newState;
+        }
+
+        public void updateState() {
+            if (currentState != null) {
+                currentState.update(this);
+            }
+        }
+    }
+
+    // Tworzenie nowych obiekótw wykorzystywanych do poprawnego działania symulacji
+    private List<PositionedVehicle> activeVehicles = new ArrayList<>();
+    private Generator vehicleGenerator = new Generator();
+    private VehicleRender vehiclerender = new VehicleRender();
+    private ParkingSpace parkingManager = new ParkingSpace(0, 0, Vehicle.VehicleType.osobowy, false);
+    private DateView dateWindow = new DateView();
+    Random random = new Random();
+
+    public Panel() {
+        setBackground(Color.DARK_GRAY);
+        Timer textUpdateTimer = new Timer(app.config.Configuration.STATS_UPDATE_DELAY, e -> {
+            
+            int currentCars = 0;
+            int currentTrucks = 0;
+            int currentMotos = 0;
+
+            for (PositionedVehicle pv : activeVehicles) {
+                if (pv.vehicle.getType() == Vehicle.VehicleType.osobowy) {
+                    currentCars++;
+                } else if (pv.vehicle.getType() == Vehicle.VehicleType.ciezarowy) {
+                    currentTrucks++;
+                } else if (pv.vehicle.getType() == Vehicle.VehicleType.motocykl) {
+                    currentMotos++;
+                }
+            }
+
+            int currentTotalVehicles = activeVehicles.size(); 
+            
+            dateWindow.updateCarValue(currentCars);
+            dateWindow.updateTruckValue(currentTrucks);
+            dateWindow.updateMotoValue(currentMotos);
+            dateWindow.updateVehicleValue(currentTotalVehicles); 
+            
+            repaint(); 
+        });
+        textUpdateTimer.start();
+        dateWindow.setVisible(true);
+    }
+
+    public void spawnNewVehicle() {
+        Vehicle v = vehicleGenerator.GenerateRandom();
+        
+        if (v != null) {
+            
+            ParkingSpace spot = parkingManager.getRandomFreeSpot(v.getType());
+            
+            if (spot == null) {
+                return;
+            }
+
+            spot.occupied = true;
+
+            int startY = calculateStartY(spot.y);
+        
+            int destinationX = spot.x;
+            int destinationY = spot.y;
+            PositionedVehicle pv = new PositionedVehicle(v, 0, startY, destinationX, destinationY, startY);
+            pv.parkingSpace = spot;
+            activeVehicles.add(pv);
+            repaint();
+        }
+    }
+    
+    private int calculateStartY(int spotY) {
+        if (spotY < 100) return 100;
+        if (spotY < 270) return 150;
+        if (spotY < 380) return 370;
+        return 430; 
+    }
+ 
+    
+    public void moveAllVehicles() {
+        for (PositionedVehicle pv : activeVehicles) {
+            pv.updateState();
+        }
+        
+        activeVehicles.removeIf(pv -> {
+            if(pv.x > 1200){
+                if (pv.parkingSpace != null) {
+                    pv.parkingSpace.occupied = false; 
+                }
+                return true; 
+            }
+            return false;
+        });
+        repaint();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        Graphics2D g2d = (Graphics2D) g;
+
+        Background.drawBackground(g2d);
+        
+        for (PositionedVehicle pv : activeVehicles) {
+            drawVehicle(g2d, pv.vehicle, pv.vehicle.getColor(), pv.vehicle.getType(), pv.x, pv.y, pv.isVertical);
+        }
+    }
+
+    // Zamiana nazwy koloru na właściwy kolor
+    private Color convertColorEnum(Vehicle.Color vehicleColor) {
+        if (vehicleColor == null) return Color.BLACK;
+        switch (vehicleColor) {
+            case czerwony: return Color.RED;
+            case niebieski: return Color.BLUE;
+            case bialy: return Color.WHITE;
+            case szary: return Color.GRAY;
+            case czarny: return Color.BLACK;
+            default: return Color.BLACK;
+        }
+    }
+
+
+    // Funckja zajmująca się rysowaniem pojazdów
+    public void drawVehicle(Graphics g, Vehicle vehicle, Vehicle.Color color, Vehicle.VehicleType type, int x, int y, boolean isVertical) {
+        Graphics2D g2d = (Graphics2D) g;
+        if (type == null || vehicle == null) return;
+
+        Color awtColor = convertColorEnum(vehicle.getColor());
+
+        vehiclerender.draw(g2d, vehicle, x, y, awtColor, isVertical);
+    }
+
+    public int occupiedCount(){
+        return activeVehicles.size();
+    }
+}
