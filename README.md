@@ -36,6 +36,6 @@
 Dla systemu **macOS / Linux**:
    ```bash
    open target/site/apidocs/index.html
-Dla systemu **Windows:**
+3. Dla systemu **Windows:**
    ```bash
    start target\site\apidocs\index.html
