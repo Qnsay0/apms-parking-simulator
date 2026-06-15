@@ -1,9 +1,41 @@
-# apms-parking-simulator (Automated Parking Managment Simulator)
+## 📖 O projekcie
+---
 
-This project was developed as part of the Object-Oriented Programming (OOP) course laboratories. 
+**Automated Parking Management System (APMS)** to projekt symulatora stworzony w ramach zajęć Programowania Obiektowego. Aplikacja umożliwia testowanie różnych scenariuszy logistycznych, zarządzanie ruchem pojazdów i miejscami parkingowymi z wykorzystaniem wzorca projektowego State Pattern.
 
-The main goal of the application is to simulate an automated parking management system. Key features of the simulation include:
-* Dynamically modifying parameters to observe and analyze vehicle behavior.
-* Simulating varying traffic conditions and parking loads at different times of the day.
 
-The project serves as a practical demonstration of **clean code practices** and the effective implementation of **OOP design patterns** (such as MVC).
+---
+
+## 🚀 Uruchomienie lokalne
+---
+
+##  Wymagania
+* **Java Development Kit (JDK)** w wersji **17** lub nowszej.
+* **Apache Maven** (do budowania projektu, uruchamiania i generowania Javadoc).
+
+##  Instalacja
+1. **Sklonuj repozytorium**
+   ```bash
+   git clone -b develop https://github.com/Qnsay0/apms-parking-simulator.git
+   cd apms-parking-simulator
+2. **Skompiluj projekt**
+   ```bash
+   mvn clean compile
+3. **Uruchom symulator**
+   ```bash
+   mvn exec:java -Dexec.mainClass="app.APMSLauncher"
+---
+
+## 📚 Dokumentacja API (Javadoc)
+---
+
+1. **Wygeneruj plik Javadoc**
+   ```bash
+   mvn javadoc:javadoc
+2. **Otwórz w przeglądarce**
+Dla systemu **macOS / Linux**:
+   ```bash
+   open target/site/apidocs/index.html
+Dla systemu **Windows:**
+   ```bash
+   start target\site\apidocs\index.html
