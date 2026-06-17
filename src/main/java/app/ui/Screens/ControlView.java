@@ -9,6 +9,7 @@ import app.config.Configuration;
 public class ControlView extends JFrame {
 
     public ControlView(){
+        //uklad okna
         setTitle("Panel Sterowania");
         setSize(300,100);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -19,6 +20,7 @@ public class ControlView extends JFrame {
         JButton btnNormal = new JButton("Normalnie");
         JButton btnFast = new JButton("Szybko");
 
+        //edytowanie wartosci z pliku Configuration, po kolei sa opcje: wolno, normalnie, szybko
         btnSlow.addActionListener(e -> {
             Configuration.SPAWN_VEHICLE_DELAY=500;
             Configuration.MOVE_ALL_VEHICLES_DELAY=25;

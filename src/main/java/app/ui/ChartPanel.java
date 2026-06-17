@@ -9,7 +9,7 @@ public class ChartPanel extends JPanel {
 
     List<Integer> Lista= new ArrayList<>();
 
-
+    //historia zapelnienia w formie listy
     public ChartPanel(){
         setBackground(Color.BLACK);
         for(int i=0; i<200; i++){
@@ -17,11 +17,12 @@ public class ChartPanel extends JPanel {
         }
     }
 
+    //akutalizacja zapelnienia parkingu
     public void updateChart(int OccupiedSpacesCount){
         double spacescount=OccupiedSpacesCount;
         spacescount=(spacescount/84.0)*100;
 
-        Lista.removeFirst();
+        Lista.remove(0);
         Lista.add((int)spacescount);
 
         this.repaint();
