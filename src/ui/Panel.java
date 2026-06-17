@@ -106,10 +106,7 @@ public class Panel extends JPanel {
         }
 
 
-        /* Trezba usuwać pojazdy bo jak osiagna 1000 px to nadal istnieja 
-        przez co cału czas zmienia nam się status isOccupied na false co powoduje ze auta moga
-        jednoscesnie zając to samo miejsce parkingowe XD
-        */ 
+        
 
         activeVehicles.removeIf(pv -> {
             if(pv.x > 1000){

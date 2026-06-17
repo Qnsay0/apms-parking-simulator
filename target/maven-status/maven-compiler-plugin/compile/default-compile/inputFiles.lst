@@ -1,0 +1,13 @@
+/Users/bartek/apms-parking-simulator/src/main/java/app/APMSLauncher.java
+/Users/bartek/apms-parking-simulator/src/main/java/app/config/Configuration.java
+/Users/bartek/apms-parking-simulator/src/main/java/app/generator/Generator.java
+/Users/bartek/apms-parking-simulator/src/main/java/app/model/ParkingSpace.java
+/Users/bartek/apms-parking-simulator/src/main/java/app/model/Vehicle.java
+/Users/bartek/apms-parking-simulator/src/main/java/app/ui/Background/Background.java
+/Users/bartek/apms-parking-simulator/src/main/java/app/ui/ChartPanel.java
+/Users/bartek/apms-parking-simulator/src/main/java/app/ui/Panel.java
+/Users/bartek/apms-parking-simulator/src/main/java/app/ui/Screens/ChartView.java
+/Users/bartek/apms-parking-simulator/src/main/java/app/ui/Screens/ControlView.java
+/Users/bartek/apms-parking-simulator/src/main/java/app/ui/Screens/DateView.java
+/Users/bartek/apms-parking-simulator/src/main/java/app/ui/Screens/SimulatorView.java
+/Users/bartek/apms-parking-simulator/src/main/java/app/ui/VehicleRender.java

@@ -1,7 +1,11 @@
 ## 📖 O projekcie
 ---
 
+<<<<<<< HEAD
 **Automated Parking Management System (APMS)** to projekt symulatora stworzony w ramach zajęć **Programowania Obiektowego**. Aplikacja umożliwia testowanie różnych scenariuszy logistycznych, zarządzanie ruchem pojazdów i miejscami parkingowymi z wykorzystaniem wzorca projektowego State Pattern.
+=======
+**Automated Parking Management System (APMS)** to projekt symulatora stworzony w ramach zajęć Programowania Obiektowego. Aplikacja umożliwia testowanie różnych scenariuszy logistycznych, zarządzanie ruchem pojazdów i miejscami parkingowymi z wykorzystaniem wzorca projektowego State Pattern.
+>>>>>>> develop
 
 
 ---
@@ -35,7 +39,14 @@
 2. **Otwórz w przeglądarce**
 Dla systemu **macOS / Linux**:
    ```bash
+<<<<<<< HEAD
    open target/site/apidocs/index.html
 Dla systemu **Windows:**
    ```bash
    start target\site\apidocs\index.html
+=======
+   open target/reports/apidocs/index.html
+3. Dla systemu **Windows:**
+   ```bash
+   start target/reports/apidocs/index.html
+>>>>>>> develop

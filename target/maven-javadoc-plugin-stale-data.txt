@@ -1,0 +1,51 @@
+-J-Duser.language=
+-J-Duser.country=
+@options
+@packages
+--no-fonts
+-encoding
+'UTF-8'
+-protected
+-source
+'17'
+-sourcepath
+'/Users/bartek/apms-parking-simulator/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2026. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/bartek/apms-parking-simulator/target/reports/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'apms-parking-simulator 1.0-SNAPSHOT API'
+-use
+-version
+-windowtitle
+'apms-parking-simulator 1.0-SNAPSHOT API'
+app.ui.Background
+app.ui.Screens
+app.ui
+app.config
+app
+app.generator
+app.model
+/Users/bartek/apms-parking-simulator/src/main/java = 1781611439682
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/constant-values.html = 1781622932536
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/tag-search-index.js = 1781622932569
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/overview-tree.html = 1781622932560
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/module-search-index.js = 1781622932568
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/index.html = 1781622932561
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/package-search-index.js = 1781622932568
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/serialized-form.html = 1781622932542
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/index-all.html = 1781622932574
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/allpackages-index.html = 1781622932568
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/member-search-index.js = 1781622932568
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/overview-summary.html = 1781622932575
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/help-doc.html = 1781622932576
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/element-list = 1781622932512
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/search.html = 1781622932575
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/allclasses-index.html = 1781622932567
+/Users/bartek/apms-parking-simulator/target/reports/apidocs/type-search-index.js = 1781622932568
