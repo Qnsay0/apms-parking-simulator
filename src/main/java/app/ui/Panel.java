@@ -20,6 +20,8 @@ public class Panel extends JPanel {
         void update(PositionedVehicle pv);
     }
 
+
+    // Stan pojazdu podczas jazdy po drodze do miejsca parkingowego
     private class DrivingToAisleState implements VehicleState {
         @Override
         public void update(PositionedVehicle pv) {
@@ -33,6 +35,7 @@ public class Panel extends JPanel {
         }
     }
 
+    // Stan pojazdu podczas manewru parkowania
     private class ParkingState implements VehicleState {
         @Override
         public void update(PositionedVehicle pv) {
@@ -48,6 +51,7 @@ public class Panel extends JPanel {
         }
     }
 
+    // Stan pojadu podczas postoju na miejscu parkingowym
     private class ParkedState implements VehicleState {
         @Override
         public void update(PositionedVehicle pv) {
@@ -56,7 +60,8 @@ public class Panel extends JPanel {
             }
         }
     }
-
+    
+    // Stan pojazdu podczas opuszczania miejsca parkingowego
     private class LeavingSpotState implements VehicleState {
         @Override
         public void update(PositionedVehicle pv) {
@@ -70,6 +75,7 @@ public class Panel extends JPanel {
         }
     }
 
+    // Stan pojazdu podczas opuszczania parkingu 
     private class ExitingState implements VehicleState {
         @Override
         public void update(PositionedVehicle pv) {
@@ -157,6 +163,8 @@ public class Panel extends JPanel {
         dateWindow.setVisible(true);
     }
 
+
+    // Funkcja generowania nowych pijazdów oraz przypisywania im odpowiednich miejsc parkingowych
     public void spawnNewVehicle() {
         Vehicle v = vehicleGenerator.GenerateRandom();
         
@@ -181,6 +189,8 @@ public class Panel extends JPanel {
         }
     }
     
+
+    // Funkcja do wyznaczania miejsca startu 
     private int calculateStartY(int spotY) {
         if (spotY < 100) return 100;
         if (spotY < 270) return 150;
@@ -188,7 +198,7 @@ public class Panel extends JPanel {
         return 430; 
     }
  
-    
+    // Funckja do aktualizacji poruszania się pojazdów 
     public void moveAllVehicles() {
         for (PositionedVehicle pv : activeVehicles) {
             pv.updateState();
